@@ -93,7 +93,6 @@
 
     <!-- JAVASCRIPT (Section 3) -->
     <script>
-
         mapboxgl.accessToken = 'pk.eyJ1IjoibGJpYXNzaW8iLCJhIjoiY21odm13N3p0MGM4OTJrb2gyOTJnOTMxbCJ9.P8IDFURQZ54bnsZa4jeLPw';
 
         const map = new mapboxgl.Map({
@@ -104,17 +103,19 @@
         });
 
         async function geojsonFetch() {
-
+            // Make sure this file name matches exactly what’s in your assets folder
             let response = await fetch('assets/state_data.geojson');
-            let state_data = await response.json();
+            let stateData = await response.json();
 
             map.on('load', function loadingData() {
 
-                map.addSource('state_data', {
+                // Source name: stateData
+                map.addSource('stateData', {
                     type: 'geojson',
-                    data: state_data
+                    data: stateData
                 });
 
+                // Layer uses the same source name
                 map.addLayer({
                     'id': 'stateData-layer',
                     'type': 'fill',
@@ -190,16 +191,15 @@
                     });
 
                     document.getElementById('text-description').innerHTML =
-                        state.length ?
-                        `<h3>${state[0].properties.name}</h3><p><strong><em>${state[0].properties.density}</em></strong> people per square mile</p>` :
-                        `<p>Hover over a state!</p>`;
+                        state.length
+                            ? `<h3>${state[0].properties.name}</h3><p><strong><em>${state[0].properties.density}</em></strong> people per square mile</p>`
+                            : `<p>Hover over a state!</p>`;
                 });
 
             });
         }
 
         geojsonFetch();
-
     </script>
 
 </body>
